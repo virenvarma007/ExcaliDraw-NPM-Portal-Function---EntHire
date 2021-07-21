@@ -44,6 +44,7 @@ export default function App() {
   const [shouldAddWatermark, setShouldAddWatermark] = useState(false);
   const [theme, setTheme] = useState("light");
   const elementsOverTime = require("./elements.json");
+  const stateOverTime = require("./states.json");
   var blobs = [];
   var d = new Date();
   var time = d.getTime();
@@ -68,10 +69,12 @@ export default function App() {
     newtime = newtime + 75;
     if (newtime - time >= 10000) {
       time = newtime;
+      let nstate = JSON.stringify(state);
+      stateOverTime.push(JSON.parse(nstate));
       let nele = JSON.stringify(elements);
       elementsOverTime.push(JSON.parse(nele));
       document.getElementById("demo").innerHTML =
-        "Total Number if Iterations Saved: " +
+        "Total Number of Iterations Saved: " +
         (Object.keys(elementsOverTime).length - 1);
     }
   }
@@ -160,7 +163,7 @@ export default function App() {
               elements: elementsOverTime[value],
               mimeType: "image/png",
               appState: {
-                ...initialData.appState,
+                ...stateOverTime[value],
                 exportWithDarkMode,
                 shouldAddWatermark
               }
